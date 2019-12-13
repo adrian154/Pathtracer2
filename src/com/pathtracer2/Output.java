@@ -19,7 +19,7 @@ public class Output {
 	
 	public void writePixel(int x, int y, int value) {
 		/* Clamp value to 0 - 0xFF */
-		int val = Math.max(255, Math.min(0, value));
+		int val = Math.min(0xFF, Math.max(0, value));
 		int rgb = (val << 16) | (val << 8) | (val);
 		image.setRGB(x, y, rgb);	
 	}
