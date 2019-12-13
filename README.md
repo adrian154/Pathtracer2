@@ -1,2 +1,4 @@
 # Pathtracer2
 Pathtracer written in Java.
+
+#TO MY KNOWLEDGE THIS PROJECT DOES NOT WORK SO PLEASE DON'T EVEN LOOK AT IT
