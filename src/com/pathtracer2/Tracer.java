@@ -25,28 +25,16 @@ public class Tracer {
 		
 		/* We need to translate this vector from the local coordinate space (where Z=(0,0,1)) to a global coordinate space where Z=Normal */
 		/* U,V,W = basis vectors of local coord space (V=Normal) */
-		Vector V = normal;
-		Vector U = Vector.getOrthagonal(V);
-		Vector W = Vector.cross(U, V);
+		Vector Vy = normal;
+		Vector Vz = Vector.getOrthagonal(Vy);
+		Vector Vx = Vector.cross(Vz, Vy);
 		
 		/* Convert randomVector to global cartesian coords */
-		Vector result = Vector.add(Vector.add(Vector.multiply(randomVector, U), Vector.multiply(randomVector, V)), Vector.multiply(randomVector, W));
-		
-		/*
 		Vector result = new Vector(
-			randomVector.x * U.x + randomVector.x * V.x + randomVector.x * W.x,
-			randomVector.y * U.y + randomVector.y * V.y + randomVector.y * W.y,
-			randomVector.z * U.z + randomVector.z * V.z + randomVector.z * W.z
+			randomVector.x * Vx.x + randomVector.y * Vy.x + randomVector.z * Vz.x,
+			randomVector.x * Vx.y + randomVector.y * Vy.y + randomVector.z * Vz.y,
+			randomVector.x * Vx.z + randomVector.y * Vy.z + randomVector.z * Vz.z
 		);
-		*/
-		
-		/*
-		Vector result = new Vector(
-			randomVector.x * U.x + randomVector.y * V.x + randomVector.z * W.x,
-			randomVector.x * U.y + randomVector.y * V.y + randomVector.z * W.y,
-			randomVector.x * U.z + randomVector.y * V.z + randomVector.z * W.z
-		);
-		*/
 		
 		return result;
 	}
@@ -64,7 +52,7 @@ public class Tracer {
 			
 			/* Do some samples. */
 			double incomingLight = 0;
-			for(int i = 0; i < 10; i++) {
+			for(int i = 0; i < Main.numSecRays; i++) {
 				Vector diff = Vector.sub(intersection.point, intersection.sphere.center);
 				Vector normal = diff.normalize();
 				
@@ -73,12 +61,12 @@ public class Tracer {
 				incomingLight += traceRay(newRay, spheres, bounces + 1);// * Vector.dot(newDirection, normal);
 			}
 			
-			incomingLight /= 10;
+			incomingLight /= Main.numSecRays;
 			radiance += incomingLight;
 			
 			return radiance;
 		} else {
-			return 1.0;
+			return 0.0;
 		}
 		
 	
