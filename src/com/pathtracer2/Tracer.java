@@ -7,7 +7,7 @@ public class Tracer {
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
 		double theta = 2 * Math.PI  * Math.random();
-		double phi = Math.acos(2 * Math.random() - 1);
+		double phi = Math.acos(1 - 2 * Math.random());
 		double x = Math.sin(phi) * Math.cos(theta);
 		double y = Math.abs(Math.cos(phi));
 		double z = Math.sin(theta) * Math.sin(phi);
@@ -30,23 +30,7 @@ public class Tracer {
 		Vector W = Vector.cross(U, V);
 		
 		/* Convert randomVector to global cartesian coords */
-		Vector result = Vector.add(Vector.add(Vector.multiply(randomVector, U), Vector.multiply(randomVector, V)), Vector.multiply(randomVector, W));
-		
-		/*
-		Vector result = new Vector(
-			randomVector.x * U.x + randomVector.x * V.x + randomVector.x * W.x,
-			randomVector.y * U.y + randomVector.y * V.y + randomVector.y * W.y,
-			randomVector.z * U.z + randomVector.z * V.z + randomVector.z * W.z
-		);
-		*/
-		
-		/*
-		Vector result = new Vector(
-			randomVector.x * U.x + randomVector.y * V.x + randomVector.z * W.x,
-			randomVector.x * U.y + randomVector.y * V.y + randomVector.z * W.y,
-			randomVector.x * U.z + randomVector.y * V.z + randomVector.z * W.z
-		);
-		*/
+		Vector result = Vector.add(Vector.multiply(W, randomVector.z), Vector.add(Vector.multiply(U, randomVector.x), Vector.multiply(V, randomVector.y)));
 		
 		return result;
 	}
@@ -64,21 +48,24 @@ public class Tracer {
 			
 			/* Do some samples. */
 			double incomingLight = 0;
-			for(int i = 0; i < 10; i++) {
+			for(int i = 0; i < Main.NUM_SECONDARY_RAYS; i++) {
 				Vector diff = Vector.sub(intersection.point, intersection.sphere.center);
 				Vector normal = diff.normalize();
 				
 				Vector newDirection = randomInHemisphere(normal).normalize();
 				Ray newRay = new Ray(Vector.add(Vector.multiply(diff, 1.001), intersection.sphere.center), newDirection);
-				incomingLight += traceRay(newRay, spheres, bounces + 1);// * Vector.dot(newDirection, normal);
+				incomingLight += traceRay(newRay, spheres, bounces + 1) * Vector.dot(newDirection, normal);
 			}
 			
-			incomingLight /= 10;
+			incomingLight /= Main.NUM_SECONDARY_RAYS;
 			radiance += incomingLight;
 			
 			return radiance;
+
 		} else {
-			return 1.0;
+		
+			return 0.0;
+		
 		}
 		
 	
