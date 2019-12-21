@@ -9,7 +9,7 @@ public class Main {
 	public static final int NUM_SECONDARY_RAYS = 16;
 	public static final int NUM_PRIMARY_RAYS = 16;
 	
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 		Output output = new Output(WIDTH, HEIGHT);
 		
 		ArrayList<Sphere> spheres = new ArrayList<Sphere>();
@@ -41,4 +41,9 @@ public class Main {
 		output.writeToFile("output.png");
 	}
 	
+	public static void main(String[] args) {
+		for(int i = 0; i < 30; i++) {
+			System.out.print(Tracer.randomInHemisphere(new Vector(10.0, 10.0, 10.0)).toString());
+		}
+	}
 }
