@@ -48,6 +48,7 @@ public class Tracer {
 			
 			/* Do some samples. */
 			double incomingLight = 0;
+
 			for(int i = 0; i < Main.NUM_SECONDARY_RAYS; i++) {
 				Vector diff = Vector.sub(intersection.point, intersection.sphere.center);
 				Vector normal = diff.normalize();
@@ -58,6 +59,7 @@ public class Tracer {
 			}
 			
 			incomingLight /= Main.NUM_SECONDARY_RAYS;
+
 			radiance += incomingLight;
 			
 			return radiance;
@@ -65,7 +67,7 @@ public class Tracer {
 		} else {
 		
 			return 0.0;
-		
+
 		}
 		
 	

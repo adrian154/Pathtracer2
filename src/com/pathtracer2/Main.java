@@ -10,14 +10,14 @@ public class Main {
 	public static final int NUM_PRIMARY_RAYS = 16;
 	
 	public static void main2(String[] args) {
+
 		Output output = new Output(WIDTH, HEIGHT);
 		
 		ArrayList<Sphere> spheres = new ArrayList<Sphere>();
 		//spheres.add(new Sphere(new Vector(1.0, 0.0, 5.0), 0.7, 10000.0));
 		//spheres.add(new Sphere(new Vector(-1.0, 0.0, 5.0), 0.7, 0.0));
-		spheres.add(new Sphere(new Vector(0.0, 0.0, 3.0), 0.2, 30000.0));
-		spheres.add(new Sphere(new Vector(0.0, -1.0, 5.0), 0.9, 20.0));
-		//spheres.add(new Sphere(new Vector(0.0, 5.0, 0.0), 7.0, 0.0));
+		spheres.add(new Sphere(new Vector(0.0, 1.0, 3.0), 0.2, 10000.0));
+		spheres.add(new Sphere(new Vector(0.0, -1.0, 3.0), 0.5, 0.0));
 		
 		for(int i = 0; i < WIDTH; i++) {
 			for(int j = 0; j < HEIGHT; j++) {
