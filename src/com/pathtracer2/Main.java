@@ -3,8 +3,8 @@ package com.pathtracer2;
 import java.util.ArrayList;
 
 public class Main {
-	public static final int WIDTH = 256;
-	public static final int HEIGHT = 256;
+	public static final int WIDTH = 192;
+	public static final int HEIGHT = 192;
 	
 	public static final int NUM_SECONDARY_RAYS = 4;
 	public static final int NUM_PRIMARY_RAYS = 1;
