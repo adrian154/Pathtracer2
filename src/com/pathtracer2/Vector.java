@@ -55,7 +55,8 @@ public class Vector {
 	}
 	
 	public String toString() {
-		return new String("{\"x\":\"" + this.x + "\",\"y\":\"" + this.y + "\",\"z\":\"" + this.z + "\"} ");
+		return new String("(" + this.x + ", " + this.y + ", " + this.z + ")");
+		//return new String("{\"x\":\"" + this.x + "\",\"y\":\"" + this.y + "\",\"z\":\"" + this.z + "\"} ");
 	}
 	
 }

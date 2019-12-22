@@ -30,20 +30,34 @@ public class Tracer {
 		Vector W = Vector.cross(U, V);
 		
 		/* Convert randomVector to global cartesian coords */
-		Vector result = Vector.add(Vector.multiply(W, randomVector.z), Vector.add(Vector.multiply(U, randomVector.x), Vector.multiply(V, randomVector.y)));
+		//Vector result = Vector.add(Vector.multiply(W, randomVector.z), Vector.add(Vector.multiply(U, randomVector.x), Vector.multiply(V, randomVector.y)));
+		Vector result = new Vector(
+			randomVector.x * U.x + randomVector.y * V.x + randomVector.z * W.x,
+			randomVector.x * U.y + randomVector.y * V.y + randomVector.z * W.y,
+			randomVector.x * U.z + randomVector.y * V.z + randomVector.z * W.z
+		);
 		
 		return result;
 	}
 	
 	/* Trace primary ray. */
-	public static double traceRay(Ray ray, ArrayList<Sphere> spheres, int bounces, int originSphere) {
-		Intersection intersection = IntersectionTester.getIntersection(ray, spheres, originSphere);
-			
-		if(bounces > 1) {
+	public static double traceRay(Ray ray, ArrayList<Sphere> spheres, int bounces, int originIndex) {
+		
+		if(bounces > 2) {
 			return 0;
 		}
 		
+		Intersection intersection = IntersectionTester.getIntersection(ray, spheres, originIndex);
+		
+		if(originIndex == -1) {
+			System.out.println("Primary ray.");
+		} else {
+			System.out.println("Secondary ray shot from " + originIndex + ".");
+		}
+		
 		if(intersection.distance < Double.POSITIVE_INFINITY) {
+			System.out.println("Ray shot from " + originIndex + " hit " + intersection.sphereIndex + " at " + intersection.point.toString());
+			
 			double radiance = intersection.sphere.emission;
 			
 			/* Do some samples. */
@@ -51,20 +65,21 @@ public class Tracer {
 
 			for(int i = 0; i < Main.NUM_SECONDARY_RAYS; i++) {
 				Vector normal = Vector.sub(intersection.point, intersection.sphere.center).normalize();
-				
 				Vector newDirection = randomInHemisphere(normal).normalize();
+				
 				Ray newRay = new Ray(intersection.point, newDirection);
+				System.out.println("rayOrigin=" + newRay.origin + ", rayDirection=" + newRay.direction);
 				incomingLight += traceRay(newRay, spheres, bounces + 1, intersection.sphereIndex) * Vector.dot(newDirection, normal);
 			}
 			
 			incomingLight /= Main.NUM_SECONDARY_RAYS;
-
 			radiance += incomingLight;
 			
 			return radiance;
 
 		} else {
 		
+			System.out.println("No hit on ray shot from " + originIndex);
 			return 0.0;
 
 		}
@@ -72,3 +87,6 @@ public class Tracer {
 	
 	}
 }
+
+
+
