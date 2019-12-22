@@ -19,8 +19,8 @@ public class IntersectionTester {
 		}
 		
 		/* Solve quadratic. */
-		double t1 = -b + Math.sqrt(b * b - 4 * a * c);
-		double t2 = -b - Math.sqrt(b * b - 4 * a * c);
+		double t1 = (-b + Math.sqrt(disc)) / (2 * a);
+		double t2 = (-b - Math.sqrt(disc)) / (2 * a);
 		
 		/* Return nearest position in front of camera. */
 		if(t1 < 0 && t2 > 0) {

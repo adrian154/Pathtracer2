@@ -43,21 +43,14 @@ public class Tracer {
 	/* Trace primary ray. */
 	public static double traceRay(Ray ray, ArrayList<Sphere> spheres, int bounces, int originIndex) {
 		
-		if(bounces > 2) {
+		if(bounces > 3) {
 			return 0;
 		}
 		
 		Intersection intersection = IntersectionTester.getIntersection(ray, spheres, originIndex);
-		
-		if(originIndex == -1) {
-			System.out.println("Primary ray.");
-		} else {
-			System.out.println("Secondary ray shot from " + originIndex + ".");
-		}
-		
+	
 		if(intersection.distance < Double.POSITIVE_INFINITY) {
-			System.out.println("Ray shot from " + originIndex + " hit " + intersection.sphereIndex + " at " + intersection.point.toString());
-			
+		
 			double radiance = intersection.sphere.emission;
 			
 			/* Do some samples. */
@@ -68,7 +61,6 @@ public class Tracer {
 				Vector newDirection = randomInHemisphere(normal).normalize();
 				
 				Ray newRay = new Ray(intersection.point, newDirection);
-				System.out.println("rayOrigin=" + newRay.origin + ", rayDirection=" + newRay.direction);
 				incomingLight += traceRay(newRay, spheres, bounces + 1, intersection.sphereIndex) * Vector.dot(newDirection, normal);
 			}
 			
@@ -78,8 +70,7 @@ public class Tracer {
 			return radiance;
 
 		} else {
-		
-			System.out.println("No hit on ray shot from " + originIndex);
+
 			return 0.0;
 
 		}

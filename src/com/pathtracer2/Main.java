@@ -3,20 +3,23 @@ package com.pathtracer2;
 import java.util.ArrayList;
 
 public class Main {
-	public static final int WIDTH = 192;
-	public static final int HEIGHT = 192;
+	public static final int WIDTH = 512;
+	public static final int HEIGHT = 512;
 	
-	public static final int NUM_SECONDARY_RAYS = 4;
-	public static final int NUM_PRIMARY_RAYS = 1;
+	public static final int NUM_SECONDARY_RAYS = 64;
+	public static final int NUM_PRIMARY_RAYS = 64;
 	
 	public static void main(String[] args) {
-
+		
 		Output output = new Output(WIDTH, HEIGHT);
 		
 		/* Put some spheres in scene */
 		ArrayList<Sphere> spheres = new ArrayList<Sphere>();
-		spheres.add(new Sphere(new Vector(0.0, 0.0, 3.0), 0.2, 10000.0));
-		spheres.add(new Sphere(new Vector(0.0, -1.0, 5.0), 0.5, 0.0));
+		spheres.add(new Sphere(new Vector(0.0, -0.6, 3.0), 0.1, 10000.0));
+		spheres.add(new Sphere(new Vector(0.0, 0.0, 3.0), 0.2, 10.0));
+		spheres.add(new Sphere(new Vector(0.0, 50.5, 0.0), 50.0, 10.0));
+		
+		long startTime = System.currentTimeMillis();
 		
 		for(int i = 0; i < WIDTH; i++) {
 			for(int j = 0; j < HEIGHT; j++) {
@@ -40,6 +43,10 @@ public class Main {
 			/* Print progress */
 			System.out.println(Math.floor(i * 100 / WIDTH) + "%");
 		}
+		
+		long finishTime = System.currentTimeMillis();
+		long elapsed = finishTime - startTime;
+		System.out.println("Took " + (elapsed / 1000) + " seconds to render.");
 		
 		output.writeToFile("output.png");
 	}
