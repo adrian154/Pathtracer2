@@ -6,8 +6,8 @@ public class Main {
 	public static final int WIDTH = 512;
 	public static final int HEIGHT = 512;
 	
-	public static final int NUM_SECONDARY_RAYS = 64;
-	public static final int NUM_PRIMARY_RAYS = 64;
+	public static final int NUM_SECONDARY_RAYS = 8;
+	public static final int NUM_PRIMARY_RAYS = 8;
 	
 	public static void main(String[] args) {
 		
@@ -15,9 +15,10 @@ public class Main {
 		
 		/* Put some spheres in scene */
 		ArrayList<Sphere> spheres = new ArrayList<Sphere>();
-		spheres.add(new Sphere(new Vector(0.0, -0.6, 3.0), 0.1, 10000.0));
-		spheres.add(new Sphere(new Vector(0.0, 0.0, 3.0), 0.2, 10.0));
-		spheres.add(new Sphere(new Vector(0.0, 50.5, 0.0), 50.0, 10.0));
+		//spheres.add(new Sphere(new Vector(0.0, -0.6, 3.0), 0.1, 10000.0));
+		spheres.add(new Sphere(new Vector(0.0, 0.0, 3.0), 0.2, 0.0));
+		spheres.add(new Sphere(new Vector(0.0, 50.5, 0.0), 50.0, 0.0));
+		spheres.add(new Sphere(new Vector(0.0, 0.0, 0.0), 100.0, 230.0));
 		
 		long startTime = System.currentTimeMillis();
 		
@@ -46,7 +47,7 @@ public class Main {
 		
 		long finishTime = System.currentTimeMillis();
 		long elapsed = finishTime - startTime;
-		System.out.println("Took " + (elapsed / 1000) + " seconds to render.");
+		System.out.println("Took " + ((double)elapsed / 1000.0) + " seconds to render.");
 		
 		output.writeToFile("output.png");
 	}
