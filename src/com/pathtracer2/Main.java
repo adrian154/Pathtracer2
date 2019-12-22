@@ -9,7 +9,7 @@ public class Main {
 	public static final int NUM_SECONDARY_RAYS = 16;
 	public static final int NUM_PRIMARY_RAYS = 16;
 	
-	public static void main2(String[] args) {
+	public static void main(String[] args) {
 
 		Output output = new Output(WIDTH, HEIGHT);
 		
@@ -28,7 +28,7 @@ public class Main {
 				
 				double radiance = 0;
 				for(int k = 0; k < NUM_PRIMARY_RAYS; k++) {
-					radiance += Tracer.traceRay(ray, spheres, 0);
+					radiance += Tracer.traceRay(ray, spheres, 0, -1);
 				}
 				radiance /= NUM_PRIMARY_RAYS;
 				
@@ -41,7 +41,7 @@ public class Main {
 		output.writeToFile("output.png");
 	}
 	
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 		for(int i = 0; i < 30; i++) {
 			System.out.print(Tracer.randomInHemisphere(new Vector(10.0, 10.0, 10.0)).toString());
 		}

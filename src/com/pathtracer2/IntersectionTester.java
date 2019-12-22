@@ -35,7 +35,7 @@ public class IntersectionTester {
 		
 	}
 	
-	public static Intersection getIntersection(Ray ray, ArrayList<Sphere> spheres) {
+	public static Intersection getIntersection(Ray ray, ArrayList<Sphere> spheres, int originSphere) {
 		double nearestDistance = Double.POSITIVE_INFINITY;
 		int index = 0;
 		
@@ -43,13 +43,13 @@ public class IntersectionTester {
 			double distance = IntersectionTester.intersect(ray, spheres.get(i));
 
 			/* Check if it is nearest. */
-			if(distance < nearestDistance) {
+			if(distance < nearestDistance && i != originSphere) {
 				nearestDistance = distance;
 				index = i;
 			}
 		}
 		
-		return new Intersection(spheres.get(index), ray.point(nearestDistance), nearestDistance);
+		return new Intersection(spheres.get(index), ray.point(nearestDistance), nearestDistance, index);
 	}
 	
 }

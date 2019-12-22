@@ -36,8 +36,8 @@ public class Tracer {
 	}
 	
 	/* Trace primary ray. */
-	public static double traceRay(Ray ray, ArrayList<Sphere> spheres, int bounces) {
-		Intersection intersection = IntersectionTester.getIntersection(ray, spheres);
+	public static double traceRay(Ray ray, ArrayList<Sphere> spheres, int bounces, int originSphere) {
+		Intersection intersection = IntersectionTester.getIntersection(ray, spheres, originSphere);
 			
 		if(bounces > 1) {
 			return 0;
@@ -50,12 +50,11 @@ public class Tracer {
 			double incomingLight = 0;
 
 			for(int i = 0; i < Main.NUM_SECONDARY_RAYS; i++) {
-				Vector diff = Vector.sub(intersection.point, intersection.sphere.center);
-				Vector normal = diff.normalize();
+				Vector normal = Vector.sub(intersection.point, intersection.sphere.center).normalize();
 				
 				Vector newDirection = randomInHemisphere(normal).normalize();
-				Ray newRay = new Ray(Vector.add(Vector.multiply(diff, 1.001), intersection.sphere.center), newDirection);
-				incomingLight += traceRay(newRay, spheres, bounces + 1) * Vector.dot(newDirection, normal);
+				Ray newRay = new Ray(intersection.point, newDirection);
+				incomingLight += traceRay(newRay, spheres, bounces + 1, intersection.sphereIndex) * Vector.dot(newDirection, normal);
 			}
 			
 			incomingLight /= Main.NUM_SECONDARY_RAYS;
