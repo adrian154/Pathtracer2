@@ -23,7 +23,7 @@ public class Tracer {
 	}
 	
 	/* Generate random vector in hemisphere. */
-	public static Vector randomInHemisphere(Vector normal) {
+	public static Vector getDiffuseVector(Vector normal) {
 		
 		/* Normalize input vector to be safe */
 		normal = normal.normalize();
@@ -46,6 +46,16 @@ public class Tracer {
 		
 		return result;
 	}
+
+	/* Get reflection vector */
+	public static Vector getReflectVector(Vector incident, Vector normal) {
+		return Vector.sub(incident, Vector.multiply(normal, 2 * Vector.dot(incident, normal)));	
+	}
+	
+	/* Get refraction vector */
+	public static Vector getRefractVector(Vector incident, Vector normal) {
+		
+	}
 	
 	/* Trace primary ray. */
 	public static TraceColor traceRay(Ray ray, ArrayList<Sphere> spheres, int bounces, int originIndex) {
@@ -67,9 +77,11 @@ public class Tracer {
 
 				Vector newDirection;
 				if(Math.random() < intersection.material.probReflective) {
-					newDirection = Vector.sub(ray.direction, Vector.multiply(intersection.normal, 2 * Vector.dot(ray.direction, intersection.normal)));
+					newDirection = getReflectVector(ray.direction, intersection.normal).normalize();
+				} else if(Math.random() < intersection.material.probRefractive) {
+					newDirection = getRefractVector(ray.direction, intersection.normal).normalize();
 				} else {
-					newDirection = randomInHemisphere(intersection.normal).normalize();
+					newDirection = getDiffuseVector(intersection.normal).normalize();
 				}
 				
 				Ray newRay = new Ray(intersection.point, newDirection);
