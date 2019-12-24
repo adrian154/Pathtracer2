@@ -50,7 +50,23 @@ public class IntersectionTester {
 			
 		}
 		
-		return new Intersection(spheres.get(index), ray.point(nearestDistance), nearestDistance, index);
+		double floorDistance = (Tracer.FLOOR - ray.origin.y) / ray.direction.y;
+		
+		if(floorDistance > 0 && floorDistance < nearestDistance && originIndex != -2) {
+			Vector point = ray.point(floorDistance);
+			Vector normal = new Vector(0.0, 1.0, 0.0);
+			
+			boolean grid = Math.sin(point.x * 3) > 0 ^ Math.sin(point.z * 3) > 0;
+			Material material = new Material(new TraceColor(0.0, 0.0, 0.0), grid ? new TraceColor(1.0, 1.0, 1.0) : new TraceColor(0.0, 0.0, 0.0), 0.0);
+			
+			return new Intersection(material, point, normal, floorDistance, -2);
+		} else {
+			Sphere sphere = spheres.get(index);
+			Vector point = ray.point(nearestDistance);
+			Vector normal = Vector.sub(point, sphere.center).normalize();
+			return new Intersection(sphere.material, point, normal, nearestDistance, index);
+		}
+		
 	}
 	
 }
