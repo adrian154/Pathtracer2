@@ -17,3 +17,5 @@ A simple pathtracer written in Java.
 ![image](https://i.imgur.com/jCfkluO.png)
 
 ![image](https://i.imgur.com/ayaaCiw.png)
+
+![image](https://i.imgur.com/ZaS8wCn.png)
