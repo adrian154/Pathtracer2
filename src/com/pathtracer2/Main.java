@@ -21,6 +21,12 @@ public class Main {
 		scene.spheres.add(new Sphere(new Vector(0.0, 0.0, 3.0), 100, ambientMat));
 		*/
 		
+		TraceColor color = new TraceColor(
+			Math.random(),
+			Math.random(),
+			Math.random()
+		);
+		
 		for(int i = 0; i < 32; i++) {
 			scene.spheres.add(new Sphere(
 				new Vector(
@@ -30,16 +36,8 @@ public class Main {
 				),
 				Math.random() * 0.2 + 0.1,
 				new Material(
-					new TraceColor(
-						0,
-						0,
-						0
-					),
-					new TraceColor(
-						Math.random(),
-						Math.random(),
-						Math.random()
-					)
+					Math.random() > 0.5 ? color.times(1000) : new TraceColor(0, 0, 0),
+					color
 				)
 			));
 		}
