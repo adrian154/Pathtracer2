@@ -22,7 +22,7 @@ public class Main {
 		*/
 		
 		
-		for(int i = 0; i < 64; i++) {
+		for(int i = 0; i < 50; i++) {
 			TraceColor color = new TraceColor(
 				Math.random(),
 				Math.random(),
@@ -31,19 +31,20 @@ public class Main {
 			
 			scene.spheres.add(new Sphere(
 				new Vector(
-					Math.random() * 2 - 1,
-					Math.random() * 2 - 1,
-					Math.random() * 2 - 1 + 3
+					Math.random() * 2.5 - 1.25,
+					Math.random() * 2.5 - 1.25,
+					Math.random() * 2.5 - 1.25 + 3
 				),
 				0.15,
 				new Material(
-					Math.random() > 0.5 ? color.times(200) : new TraceColor(0, 0, 0),
-					color
+					Math.random() > 0.8 ? color.times(500) : new TraceColor(0, 0, 0),
+					color,
+					0.7
 				)
 			));
 		}
 
-		Material skyMat = new Material(new TraceColor(0, 0, 0), new TraceColor(1, 1, 1));
+		Material skyMat = new Material(new TraceColor(0, 0, 0), new TraceColor(1, 1, 1), 0);
 		scene.spheres.add(new Sphere(new Vector(0.0, 0.0, 0.0), 10, skyMat));
 		
 		Tracer.traceScene(scene, output);

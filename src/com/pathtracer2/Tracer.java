@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Tracer {
 	
-	public static final int NUM_SECONDARY_RAYS = 16;
-	public static final int NUM_PRIMARY_RAYS = 16;
-	public static final int NUM_BOUNCES = 2;
+	public static final int NUM_SECONDARY_RAYS = 8;
+	public static final int NUM_PRIMARY_RAYS = 8;
+	public static final int NUM_BOUNCES = 4;
 	
-	public static TraceColor AMBIENT = new TraceColor(20.0, 20.0, 20.0);
+	public static TraceColor AMBIENT = new TraceColor(5.0, 5.0, 5.0);
 	
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
@@ -63,7 +63,13 @@ public class Tracer {
 
 			for(int i = 0; i < NUM_SECONDARY_RAYS; i++) {
 				Vector normal = Vector.sub(intersection.point, intersection.sphere.center).normalize();
-				Vector newDirection = randomInHemisphere(normal).normalize();
+				
+				Vector newDirection;
+				if(Math.random() > 1 - intersection.sphere.material.probReflective) {
+					newDirection = Vector.sub(ray.direction, Vector.multiply(normal, 2 * Vector.dot(ray.direction, normal)));
+				} else {
+					newDirection = randomInHemisphere(normal).normalize();
+				}
 				
 				Ray newRay = new Ray(intersection.point, newDirection);
 				incomingLight = incomingLight.plus(traceRay(newRay, spheres, bounces + 1, intersection.sphereIndex).times(Vector.dot(newDirection, normal)));
