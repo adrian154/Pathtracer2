@@ -17,10 +17,13 @@ public class Output {
 		this.height = height;
 	}
 	
-	public void writePixel(int x, int y, int value) {
+	public void writePixel(int x, int y, int r, int g, int b) {
 		/* Clamp value to 0 - 0xFF */
-		int val = Math.min(0xFF, Math.max(0, value));
-		int rgb = (val << 16) | (val << 8) | (val);
+		r = Math.min(0xFF, Math.max(0, r));
+		g = Math.min(0xFF, Math.max(0, g));
+		b = Math.min(0xFF, Math.max(0, b));
+		
+		int rgb = (r << 16) | (g << 8) | (b);
 		image.setRGB(x, y, rgb);	
 	}
 	

@@ -8,7 +8,7 @@ public class Tracer {
 	public static final int NUM_PRIMARY_RAYS = 16;
 	public static final int NUM_BOUNCES = 2;
 	
-	public static double AMBIENT = 100.0;
+	public static TraceColor AMBIENT = new TraceColor(100.0, 100.0, 100.0);
 	
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
@@ -46,33 +46,33 @@ public class Tracer {
 	}
 	
 	/* Trace primary ray. */
-	public static double traceRay(Ray ray, ArrayList<Sphere> spheres, int bounces, int originIndex) {
+	public static TraceColor traceRay(Ray ray, ArrayList<Sphere> spheres, int bounces, int originIndex) {
 		
 		if(bounces > NUM_BOUNCES) {
-			return 0;
+			return new TraceColor(0.0, 0.0, 0.0);
 		}
 		
 		Intersection intersection = IntersectionTester.getIntersection(ray, spheres, originIndex);
 	
 		if(intersection.distance < Double.POSITIVE_INFINITY) {
 		
-			double radiance = intersection.sphere.material.emission;
+			TraceColor radiance = intersection.sphere.material.emission;
 			
 			/* Do some samples. */
-			double incomingLight = 0;
+			TraceColor incomingLight = new TraceColor(0.0, 0.0, 0.0);
 
 			for(int i = 0; i < NUM_SECONDARY_RAYS; i++) {
 				Vector normal = Vector.sub(intersection.point, intersection.sphere.center).normalize();
 				Vector newDirection = randomInHemisphere(normal).normalize();
 				
 				Ray newRay = new Ray(intersection.point, newDirection);
-				incomingLight += traceRay(newRay, spheres, bounces + 1, intersection.sphereIndex) * Vector.dot(newDirection, normal);
+				incomingLight = incomingLight.plus(traceRay(newRay, spheres, bounces + 1, intersection.sphereIndex).times(Vector.dot(newDirection, normal)));
 			}
 			
-			incomingLight /= NUM_SECONDARY_RAYS;
-			incomingLight *= intersection.sphere.material.reflection;
-			radiance += incomingLight;
-			
+			incomingLight = incomingLight.div(NUM_SECONDARY_RAYS);
+			incomingLight = incomingLight.times(intersection.sphere.material.reflection);
+			radiance = radiance.plus(incomingLight);
+
 			return radiance;
 
 		} else {
@@ -97,19 +97,22 @@ public class Tracer {
 				double ysz = 1 / output.height;
 				
 				/* Do primary rays */
-				double radiance = 0;
+				TraceColor radiance = new TraceColor(0.0, 0.0, 0.0);
 				for(int k = 0; k < NUM_PRIMARY_RAYS; k++) {
-					Ray ray = new Ray(new Vector(0, 0, 0), new Vector(
-						px + Math.random() * xsz - (xsz / 2),
-						py + Math.random() * ysz - (ysz / 2),
-						0.5)
+					Ray ray = new Ray(
+						new Vector(0, 0, 0),
+						new Vector(
+							px + Math.random() * xsz - (xsz / 2),
+							py + Math.random() * ysz - (ysz / 2),
+							0.5
+						)
 					);
-					radiance += Tracer.traceRay(ray, scene.spheres, 0, -1);
+					radiance = radiance.plus(Tracer.traceRay(ray, scene.spheres, 0, -1));
 				}
-				radiance /= NUM_PRIMARY_RAYS;
+				radiance.div(NUM_PRIMARY_RAYS);
 
 				/* Write pixel */
-				output.writePixel(i, j, (int)radiance);
+				output.writePixel(i, j, (int)radiance.red, (int)radiance.green, (int)radiance.blue);
 	
 			}
 			

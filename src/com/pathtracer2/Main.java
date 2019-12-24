@@ -30,8 +30,16 @@ public class Main {
 				),
 				Math.random() * 0.2 + 0.1,
 				new Material(
-					Math.random() > 0.8 ? 1000 : 0,
-					Math.random()
+					new TraceColor(
+						0,
+						0,
+						0
+					),
+					new TraceColor(
+						Math.random(),
+						Math.random(),
+						Math.random()
+					)
 				)
 			));
 		}

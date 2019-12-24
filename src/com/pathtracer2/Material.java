@@ -2,10 +2,10 @@ package com.pathtracer2;
 
 public class Material {
 	
-	double emission;
-	double reflection;
+	public TraceColor emission;
+	public TraceColor reflection;
 	
-	public Material(double emission, double reflection) {
+	public Material(TraceColor emission, TraceColor reflection) {
 		this.emission = emission;
 		this.reflection = reflection;
 	}
