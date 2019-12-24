@@ -5,12 +5,12 @@ public class Sphere {
 	
 	public Vector center;
 	public double radius;
-	public double emission;
+	public Material material;
 	
-	public Sphere(Vector center, double radius, double emission) {
+	public Sphere(Vector center, double radius, Material material) {
 		this.center = center;
 		this.radius = radius;
-		this.emission = emission;
+		this.material = material;
 	}
 	
 }

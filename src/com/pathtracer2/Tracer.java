@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class Tracer {
 	
+	public static final int NUM_SECONDARY_RAYS = 4;
+	public static final int NUM_PRIMARY_RAYS = 16;
+	public static final int NUM_BOUNCES = 2;
+	
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
 		double theta = 2 * Math.PI  * Math.random();
@@ -30,7 +34,6 @@ public class Tracer {
 		Vector W = Vector.cross(U, V);
 		
 		/* Convert randomVector to global cartesian coords */
-		//Vector result = Vector.add(Vector.multiply(W, randomVector.z), Vector.add(Vector.multiply(U, randomVector.x), Vector.multiply(V, randomVector.y)));
 		Vector result = new Vector(
 			randomVector.x * U.x + randomVector.y * V.x + randomVector.z * W.x,
 			randomVector.x * U.y + randomVector.y * V.y + randomVector.z * W.y,
@@ -43,7 +46,7 @@ public class Tracer {
 	/* Trace primary ray. */
 	public static double traceRay(Ray ray, ArrayList<Sphere> spheres, int bounces, int originIndex) {
 		
-		if(bounces > 3) {
+		if(bounces > NUM_BOUNCES) {
 			return 0;
 		}
 		
@@ -51,12 +54,12 @@ public class Tracer {
 	
 		if(intersection.distance < Double.POSITIVE_INFINITY) {
 		
-			double radiance = intersection.sphere.emission;
+			double radiance = intersection.sphere.material.emission;
 			
 			/* Do some samples. */
 			double incomingLight = 0;
 
-			for(int i = 0; i < Main.NUM_SECONDARY_RAYS; i++) {
+			for(int i = 0; i < NUM_SECONDARY_RAYS; i++) {
 				Vector normal = Vector.sub(intersection.point, intersection.sphere.center).normalize();
 				Vector newDirection = randomInHemisphere(normal).normalize();
 				
@@ -64,10 +67,10 @@ public class Tracer {
 				incomingLight += traceRay(newRay, spheres, bounces + 1, intersection.sphereIndex) * Vector.dot(newDirection, normal);
 			}
 			
-			incomingLight /= Main.NUM_SECONDARY_RAYS;
+			incomingLight /= NUM_SECONDARY_RAYS;
 			radiance += incomingLight;
 			
-			return radiance;
+			return radiance * intersection.sphere.material.reflection;
 
 		} else {
 
@@ -75,9 +78,43 @@ public class Tracer {
 
 		}
 		
+	}
 	
+	/* Draw image. */
+	public static void traceScene(Scene scene, Output output) {
+
+		long startTime = System.currentTimeMillis();
+		
+		for(int i = 0; i < output.width; i++) {
+			for(int j = 0; j < output.height; j++) {
+				
+				double px = ((double)i - (double)output.width / 2) / (double)output.width;
+				double py = ((double)j - (double)output.height / 2) / (double)output.height;
+				Ray ray = new Ray(new Vector(0, 0, 0), new Vector(px, py, 1));
+				
+				/* Do primary rays */
+				double radiance = 0;
+				for(int k = 0; k < NUM_PRIMARY_RAYS; k++) {
+					radiance += Tracer.traceRay(ray, scene.spheres, 0, -1);
+				}
+				radiance /= NUM_PRIMARY_RAYS;
+
+				/* Write pixel */
+				output.writePixel(i, j, (int)radiance);
+	
+			}
+			
+			/* Print progress */
+			System.out.println(Math.floor(i * 100.0 / output.width) + "%");
+		}
+		
+		long finishTime = System.currentTimeMillis();
+		long elapsed = finishTime - startTime;
+		System.out.println("Took " + ((double)elapsed / 1000.0) + " seconds to render.");
+		
+		output.writeToFile("output.png");
+		
 	}
 }
-
 
 
