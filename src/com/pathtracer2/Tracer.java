@@ -8,7 +8,7 @@ public class Tracer {
 	public static final int NUM_PRIMARY_RAYS = 16;
 	public static final int NUM_BOUNCES = 2;
 	
-	public static TraceColor AMBIENT = new TraceColor(0.0, 0.0, 0.0);
+	public static TraceColor AMBIENT = new TraceColor(20.0, 20.0, 20.0);
 	
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
@@ -127,6 +127,7 @@ public class Tracer {
 		output.writeToFile("output.png");
 		
 	}
+	
 }
 
 
