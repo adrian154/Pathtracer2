@@ -1,5 +1,12 @@
 # Pathtracer2
-Pathtracer written in Java.
+A simple pathtracer written in Java.
+
+## Features
+* Unbiased Monte Carlo pathtracing
+* Diffuse and simple specular materials
+* SPHERES ONLY
+
+## Gallery
 
 ![image](https://i.imgur.com/wij78sy.png)
 
