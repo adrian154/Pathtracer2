@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Tracer {
 	
-	public static final int NUM_SECONDARY_RAYS = 10;
+	public static final int NUM_SECONDARY_RAYS = 16;
 	public static final int NUM_PRIMARY_RAYS = 16;
 	public static final int NUM_BOUNCES = 2;
 	
-	public static double AMBIENT = 200;
+	public static double AMBIENT = 100.0;
 	
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
@@ -93,11 +93,17 @@ public class Tracer {
 				
 				double px = ((double)i - (double)output.width / 2) / (double)output.width;
 				double py = ((double)j - (double)output.height / 2) / (double)output.height;
-				Ray ray = new Ray(new Vector(0, 0, 0), new Vector(px, py, 1));
+				double xsz = 1 / output.width;
+				double ysz = 1 / output.height;
 				
 				/* Do primary rays */
 				double radiance = 0;
 				for(int k = 0; k < NUM_PRIMARY_RAYS; k++) {
+					Ray ray = new Ray(new Vector(0, 0, 0), new Vector(
+						px + Math.random() * xsz - (xsz / 2),
+						py + Math.random() * ysz - (ysz / 2),
+						0.5)
+					);
 					radiance += Tracer.traceRay(ray, scene.spheres, 0, -1);
 				}
 				radiance /= NUM_PRIMARY_RAYS;
@@ -108,7 +114,7 @@ public class Tracer {
 			}
 			
 			/* Print progress */
-			System.out.println(Math.floor(i * 100.0 / output.width) + "%");
+			System.out.println(Math.floor(i * 100.0 / output.width) + "% (" + i + "/" + output.height + ")");
 		}
 		
 		long finishTime = System.currentTimeMillis();
