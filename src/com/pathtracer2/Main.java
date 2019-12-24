@@ -10,42 +10,12 @@ public class Main {
 		Output output = new Output(WIDTH, HEIGHT);
 		Scene scene = new Scene();
 		
-		/*
-		Material lightSourceMat = new Material(3000.0, 0.0);		// Non-reflective with high emission
-		Material darkMat = new Material(0.0, 0.5);					// Non-emissive with low reflection
-		Material lightMat = new Material(0.0, 1.0);					// Non-emissive with high reflection
-		Material ambientMat = new Material(200.0, 0.0);
-
-		scene.spheres.add(new Sphere(new Vector(0.0, 0.0, 3.0), 0.5, lightMat));
-		scene.spheres.add(new Sphere(new Vector(0.0, 10000.7, 3.0), 10000, darkMat));
-		scene.spheres.add(new Sphere(new Vector(0.0, 0.0, 3.0), 100, ambientMat));
-		*/
+		Material red = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(1.0, 0.0, 0.0), 1.0);
+		Material white = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(1.0, 1.0, 1.0), 0.0);
+		Material source = new Material(new TraceColor(400.0, 400.0, 400.0), new TraceColor(1.0, 1.0, 1.0), 0.0);
 		
-		
-		for(int i = 0; i < 50; i++) {
-			TraceColor color = new TraceColor(
-				Math.random(),
-				Math.random(),
-				Math.random()
-			);
-			
-			scene.spheres.add(new Sphere(
-				new Vector(
-					Math.random() * 2.5 - 1.25,
-					Math.random() * 2.5 - 1.25,
-					Math.random() * 2.5 - 1.25 + 3
-				),
-				0.15,
-				new Material(
-					Math.random() > 0.8 ? color.times(500) : new TraceColor(0, 0, 0),
-					color,
-					0.7
-				)
-			));
-		}
-
-		Material skyMat = new Material(new TraceColor(0, 0, 0), new TraceColor(1, 1, 1), 0);
-		scene.spheres.add(new Sphere(new Vector(0.0, 0.0, 0.0), 10, skyMat));
+		//scene.spheres.add(new Sphere(new Vector(0.0, -1.2, 3.0), 0.4, source));
+		scene.spheres.add(new Sphere(new Vector(0.0, -0.2, 3.0), 0.7, red));
 		
 		Tracer.traceScene(scene, output);
 	}

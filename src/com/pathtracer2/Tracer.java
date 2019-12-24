@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 public class Tracer {
 	
-	public static final int NUM_SECONDARY_RAYS = 8;
-	public static final int NUM_PRIMARY_RAYS = 8;
+	public static final int NUM_SECONDARY_RAYS = 10;
+	public static final int NUM_PRIMARY_RAYS = 10;
 	public static final int NUM_BOUNCES = 4;
 	
-	public static TraceColor AMBIENT = new TraceColor(5.0, 5.0, 5.0);
+	public static TraceColor AMBIENT = new TraceColor(24.0, 24.0, 24.0);
+	
+	public static double FLOOR = 1.0;
 	
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
@@ -54,18 +56,32 @@ public class Tracer {
 		
 		Intersection intersection = IntersectionTester.getIntersection(ray, spheres, originIndex);
 	
-		if(intersection.distance < Double.POSITIVE_INFINITY) {
+		Material material = intersection.sphere.material;
+		Vector normal = Vector.sub(intersection.point, intersection.sphere.center).normalize();
 		
-			TraceColor radiance = intersection.sphere.material.emission;
+		double distance = intersection.distance;
+		double floorDistance = (Tracer.FLOOR - ray.origin.y) / ray.direction.y;
+		
+		if(floorDistance < intersection.distance && floorDistance > 0) {
+			distance = floorDistance;
+			intersection.point = ray.point(floorDistance);
+			
+			boolean grid = Math.sin(intersection.point.x * 3) > 0 ^ Math.sin(intersection.point.z * 3) > 0;
+			material = new Material(new TraceColor(0.0, 0.0, 0.0), grid ? new TraceColor(1.0, 1.0, 1.0) : new TraceColor(0.0, 0.0, 0.0), 0.0);
+			normal = new Vector(0.0, 1.0, 0.0);
+		}
+		
+		if(distance < Double.POSITIVE_INFINITY) {
+		
+			TraceColor radiance = material.emission;
 			
 			/* Do some samples. */
 			TraceColor incomingLight = new TraceColor(0.0, 0.0, 0.0);
 
 			for(int i = 0; i < NUM_SECONDARY_RAYS; i++) {
-				Vector normal = Vector.sub(intersection.point, intersection.sphere.center).normalize();
-				
+
 				Vector newDirection;
-				if(Math.random() > 1 - intersection.sphere.material.probReflective) {
+				if(Math.random() < material.probReflective) {
 					newDirection = Vector.sub(ray.direction, Vector.multiply(normal, 2 * Vector.dot(ray.direction, normal)));
 				} else {
 					newDirection = randomInHemisphere(normal).normalize();
@@ -76,7 +92,7 @@ public class Tracer {
 			}
 			
 			incomingLight = incomingLight.div(NUM_SECONDARY_RAYS);
-			incomingLight = incomingLight.times(intersection.sphere.material.reflection);
+			incomingLight = incomingLight.times(material.reflection);
 			radiance = radiance.plus(incomingLight);
 
 			return radiance;

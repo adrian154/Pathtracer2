@@ -41,7 +41,7 @@ public class IntersectionTester {
 		
 		for(int i = 0; i < spheres.size(); i++) {
 			double distance = IntersectionTester.intersect(ray, spheres.get(i));
-
+			
 			/* Check if it is nearest. */
 			if(distance < nearestDistance && i != originIndex) {
 				nearestDistance = distance;
