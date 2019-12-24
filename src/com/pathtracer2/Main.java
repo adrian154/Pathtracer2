@@ -18,9 +18,9 @@ public class Main {
 		Material lightMat = new Material(0.0, 1.0);					// Non-emissive with high reflection
 		
 		/* Add some spheres to the scene */
-		scene.spheres.add(new Sphere(new Vector(0.0, -1.0, 3.0), 0.3, lightSourceMat));
-		scene.spheres.add(new Sphere(new Vector(-0.3, 0.0, 3.0), 0.3, darkMat));
-		scene.spheres.add(new Sphere(new Vector(0.3, 0.0, 3.0), 0.3, lightMat));
+		scene.spheres.add(new Sphere(new Vector(0.0, -0.7, 3.0), 0.3, lightSourceMat));
+		scene.spheres.add(new Sphere(new Vector(-0.4, 0.0, 3.0), 0.3, darkMat));
+		scene.spheres.add(new Sphere(new Vector(0.4, 0.0, 3.0), 0.3, lightMat));
 		
 		Tracer.traceScene(scene, output);
 	}

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 public class Tracer {
 	
-	public static final int NUM_SECONDARY_RAYS = 4;
+	public static final int NUM_SECONDARY_RAYS = 10;
 	public static final int NUM_PRIMARY_RAYS = 16;
 	public static final int NUM_BOUNCES = 2;
+	
+	public static double AMBIENT = 200;
 	
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
@@ -68,13 +70,14 @@ public class Tracer {
 			}
 			
 			incomingLight /= NUM_SECONDARY_RAYS;
+			incomingLight *= intersection.sphere.material.reflection;
 			radiance += incomingLight;
 			
-			return radiance * intersection.sphere.material.reflection;
+			return radiance;
 
 		} else {
 
-			return 0.0;
+			return AMBIENT;
 
 		}
 		
