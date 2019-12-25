@@ -8,7 +8,7 @@ public class Tracer {
 	public static final int NUM_PRIMARY_RAYS = 8;
 	public static final int NUM_BOUNCES = 4;
 	
-	public static TraceColor AMBIENT = new TraceColor(5.0, 5.0, 5.0);
+	public static TraceColor AMBIENT = new TraceColor(10.0, 10.0, 10.0);
 	
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
@@ -109,7 +109,7 @@ public class Tracer {
 				double px = ((double)i - (double)output.width / 2) / (double)output.width;
 				double py = ((double)j - (double)output.height / 2) / (double)output.height;
 
-				Ray ray = new Ray(new Vector(0, 0, 0), new Vector(px, py, 0.5));
+				Ray ray = new Ray(new Vector(0, 0, 0), new Vector(px, py, 0.95));
 				
 				/* Do primary rays */
 				TraceColor radiance = new TraceColor(0.0, 0.0, 0.0);
