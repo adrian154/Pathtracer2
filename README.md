@@ -4,7 +4,7 @@ A simple pathtracer written in Java.
 ## Features
 * Unbiased Monte Carlo pathtracing
 * Diffuse and simple specular materials
-* SPHERES ONLY
+* ~~SPHERES ONLY~~ PLANES WORK NOW
 
 ## Gallery
 
