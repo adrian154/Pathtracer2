@@ -76,9 +76,33 @@ public class IntersectionTester {
 			double distance = IntersectionTester.intersect(ray, object);
 			
 			if(distance < nearestDistance && i != originIndex) {
-				
+				nearestDistance = distance;
+				index = i;
 			}
 				
+		}
+		
+		WorldObject nearest = objects.get(index);
+		if(nearest instanceof Plane) {
+			Plane plane = (Plane)nearest;
+			Vector point = ray.point(nearestDistance);
+			Vector normal = plane.normal;
+			Material material = plane.material;
+			
+			return new Intersection(material, point, normal, nearestDistance, index);
+		
+		} else if(nearest instanceof Sphere) {
+			Sphere sphere = (Sphere)nearest;
+			Vector point = ray.point(nearestDistance);
+			Vector normal = Vector.sub(point, sphere.center).normalize();
+			Material material = sphere.material;
+			
+			return new Intersection(material, point, normal, nearestDistance, index);
+			
+		} else {
+		
+			return new Intersection(new Material(), new Vector(), new Vector(), Double.POSITIVE_INFINITY, 0);
+			
 		}
 		
 		/*
