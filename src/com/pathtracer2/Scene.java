@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class Scene {
 	
-	public ArrayList<Sphere> spheres;
-	
+	public ArrayList<WorldObject> objects;
+
 	public Scene() {
-		spheres = new ArrayList<Sphere>();
+		objects = new ArrayList<WorldObject>();
 	}
 	
 }

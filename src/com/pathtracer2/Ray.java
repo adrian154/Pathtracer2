@@ -5,6 +5,10 @@ public class Ray {
 	public Vector direction;
 	public Vector origin;
 	
+	public Ray() {
+		
+	}
+	
 	public Ray(Vector origin, Vector direction) {
 		this.direction = direction.normalize();
 		this.origin = origin;

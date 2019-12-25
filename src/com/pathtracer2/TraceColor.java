@@ -6,6 +6,10 @@ public class TraceColor {
 	public double green;
 	public double blue;
 	
+	public TraceColor() {
+		
+	}
+	
 	public TraceColor(double red, double green, double blue) {
 		this.red = red;
 		this.green = green;
