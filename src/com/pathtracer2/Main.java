@@ -26,7 +26,7 @@ public class Main {
 		Plane rear = new Plane(new Vector(0.0, 0.0, -boxDepth / 2), new Vector(0.0, 0.0, 1.0), white);
 		Plane left = new Plane(new Vector(-boxWidth / 2, 0.0, 0.0), new Vector(1.0, 0.0, 0.0), blue);
 		Plane right = new Plane(new Vector(boxWidth / 2, 0.0, 0.0), new Vector(-1.0, 0.0, 0.0), yellow);
-		Sphere sourceSph = new Sphere(new Vector(0.0, 0.0, 6.0), 1.0, source);
+		Sphere sourceSph = new Sphere(new Vector(0.0, 0.0, 5.0), 1.0, source);
 		
 		scene.objects.add(floor);
 		scene.objects.add(ceiling);

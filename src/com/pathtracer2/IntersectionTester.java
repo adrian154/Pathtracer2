@@ -3,20 +3,7 @@ package com.pathtracer2;
 import java.util.ArrayList;
 
 public class IntersectionTester {
-	
-	public static double intersect(Ray ray, WorldObject object) {
-		if(object instanceof Sphere) {
-			return intersect(ray, (Sphere)object);
-		} else if(object instanceof Plane) {
-			return intersect(ray, (Plane)object);
-		} else {
-			
-			/* To keep Eclipse from complaining */
-			return 0.0;
-			
-		}
-	}
-	
+
 	public static double intersect(Ray ray, Sphere sphere) {
 		Vector center = Vector.sub(sphere.center, ray.origin);
 		Vector direction = ray.direction.normalize();
@@ -86,7 +73,18 @@ public class IntersectionTester {
 		
 		for(int i = 0; i < objects.size(); i++) {
 			WorldObject object = objects.get(i);
-			double distance = IntersectionTester.intersect(ray, object);
+			double distance;
+			
+			if(object instanceof Sphere) {
+				distance = intersect(ray, (Sphere)object);
+			} else if(object instanceof Plane) {
+				distance = intersect(ray, (Plane)object);
+			} else {
+				
+				/* To appease Eclipse */
+				distance = Double.POSITIVE_INFINITY;
+				
+			}
 			
 			if(distance < nearestDistance && i != originIndex) {
 				nearestDistance = distance;
