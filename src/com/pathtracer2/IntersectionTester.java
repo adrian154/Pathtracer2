@@ -27,8 +27,10 @@ public class IntersectionTester {
 		double disc = b * b - 4 * a * c;
 		
 		if(disc < 0) {
+			
 			/* No intersection. */
 			return Double.POSITIVE_INFINITY;
+			
 		}
 		
 		/* Solve quadratic. */
@@ -53,11 +55,14 @@ public class IntersectionTester {
 		/* Denominator of equation, determines if there is a solution */
 		double denom = Vector.dot(ray.direction, plane.normal);
 		if(denom == 0) {
+	
+			/* No intersection. */
 			return Double.POSITIVE_INFINITY;
+			
 		}
 		
 		/* Solve for distance */
-		double distance = Vector.dot(Vector.sub(plane.point, ray.origin), plane.normal) / denom;
+		double distance = -Vector.dot(Vector.sub(ray.origin, plane.point), plane.normal) / denom;
 		if(distance < 0) {
 			return Double.POSITIVE_INFINITY;
 		} else {
@@ -65,6 +70,14 @@ public class IntersectionTester {
 		}
 		
 	}
+	
+	/* Test ray-triangle intersection */
+	/*
+	public static double intersect(Ray ray, Triangle triangle) {
+		Vector normal = Vector.cross(triangle.vertexes[0], triangle.vertexes[1]).normalize();
+		Vector point = triangle.vertexes[0];
+	}
+	*/
 	
 	public static Intersection getIntersection(Ray ray, ArrayList<WorldObject> objects, int originIndex) {
 		

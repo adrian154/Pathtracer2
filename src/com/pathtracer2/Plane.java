@@ -10,7 +10,7 @@ public class Plane extends WorldObject {
 		
 	}
 	
-	public Plane(Vector normal, Vector point, Material material) {
+	public Plane(Vector point, Vector normal, Material material) {
 		this.normal = normal;
 		this.point = point;
 		this.material = material;

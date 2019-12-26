@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class Tracer {
 	
-	public static final int NUM_SECONDARY_RAYS = 10;
-	public static final int NUM_PRIMARY_RAYS = 10;
+	public static final int NUM_SECONDARY_RAYS = 4;
+	public static final int NUM_PRIMARY_RAYS = 4;
 	public static final int NUM_BOUNCES = 3;
 	
 	public static TraceColor AMBIENT = new TraceColor(10.0, 10.0, 10.0);
 	
-	public static double FOCAL_LENGTH = 1.9;
+	public static double FOCAL_LENGTH = 1.0;
 	
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
