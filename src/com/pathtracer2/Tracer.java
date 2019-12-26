@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 public class Tracer {
 	
-	public static final int NUM_SECONDARY_RAYS = 8;
-	public static final int NUM_PRIMARY_RAYS = 8;
-	public static final int NUM_BOUNCES = 4;
+	public static final int NUM_SECONDARY_RAYS = 10;
+	public static final int NUM_PRIMARY_RAYS = 10;
+	public static final int NUM_BOUNCES = 3;
 	
 	public static TraceColor AMBIENT = new TraceColor(10.0, 10.0, 10.0);
+	
+	public static double FOCAL_LENGTH = 1.9;
 	
 	/* Generate random vector in hemisphere */
 	public static Vector randomInHemisphere() {
@@ -67,31 +69,36 @@ public class Tracer {
 		if(intersection.distance < Double.POSITIVE_INFINITY) {
 		
 			TraceColor radiance = intersection.material.emission;
-			
-			/* Do some samples. */
 			TraceColor incomingLight = new TraceColor(0.0, 0.0, 0.0);
 
+			/* Sample secondary rays. */
 			for(int i = 0; i < NUM_SECONDARY_RAYS; i++) {
 
+				/* Get new sampling direction. */
 				Vector newDirection;
 				if(Math.random() < intersection.material.probReflective) {
 					newDirection = getReflectVector(ray.direction, intersection.normal).normalize();
 				} else {
 					newDirection = getDiffuseVector(intersection.normal).normalize();
 				}
-				
+			
+				/* Do sample */
 				Ray newRay = new Ray(intersection.point, newDirection);
 				incomingLight = incomingLight.plus(traceRay(newRay, objects, bounces + 1, intersection.index).times(Vector.dot(newDirection, intersection.normal)));
+			
 			}
 			
+			/* Calculate incoming light */
 			incomingLight = incomingLight.div(NUM_SECONDARY_RAYS);
 			incomingLight = incomingLight.times(intersection.material.reflection);
 			radiance = radiance.plus(incomingLight);
 
+			/* Return radiance (for recursion) */
 			return radiance;
 
 		} else {
 
+			/* Return ambient light */
 			return AMBIENT;
 
 		}
@@ -100,22 +107,26 @@ public class Tracer {
 	
 	/* Draw image. */
 	public static void traceScene(Scene scene, Output output) {
-
+		
+		/* Track render time */
 		long startTime = System.currentTimeMillis();
 		
 		for(int i = 0; i < output.width; i++) {
+			
 			for(int j = 0; j < output.height; j++) {
 				
+				/* Get ray */
 				double px = ((double)i - (double)output.width / 2) / (double)output.width;
 				double py = ((double)j - (double)output.height / 2) / (double)output.height;
-
-				Ray ray = new Ray(new Vector(0, 0, 0), new Vector(px, py, 0.95));
+				Ray ray = new Ray(new Vector(0, 0, 0), new Vector(px, py, FOCAL_LENGTH));
 				
 				/* Do primary rays */
 				TraceColor radiance = new TraceColor(0.0, 0.0, 0.0);
+				
 				for(int k = 0; k < NUM_PRIMARY_RAYS; k++) {
 					radiance = radiance.plus(Tracer.traceRay(ray, scene.objects, 0, -1));
 				}
+				
 				radiance.div(NUM_PRIMARY_RAYS);
 
 				/* Write pixel */
@@ -125,13 +136,13 @@ public class Tracer {
 			
 			/* Print progress */
 			System.out.println(Math.floor(i * 100.0 / output.width) + "% (" + i + "/" + output.height + ")");
+		
 		}
 		
+		/* Print render time */
 		long finishTime = System.currentTimeMillis();
 		long elapsed = finishTime - startTime;
 		System.out.println("Took " + ((double)elapsed / 1000.0) + " seconds to render.");
-		
-		output.writeToFile("output.png");
 		
 	}
 	

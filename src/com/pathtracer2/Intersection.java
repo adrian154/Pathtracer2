@@ -8,10 +8,6 @@ public class Intersection {
 	public Vector normal;
 	public double distance;
 	
-	public Intersection() {
-		
-	}
-	
 	public Intersection(Material material, Vector point, Vector normal, double distance, int index) {
 		this.material = material;
 		this.point = point;
