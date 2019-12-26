@@ -3,8 +3,8 @@ package com.pathtracer2;
 import java.util.ArrayList;
 
 public class Main {
-	public static final int WIDTH = 720;
-	public static final int HEIGHT = 720;
+	public static final int WIDTH = 360;
+	public static final int HEIGHT = 360;
 	
 	public static void main(String[] args) {
 		
@@ -25,12 +25,12 @@ public class Main {
 			if(Math.random() < (1.0/3.0)) {
 				material = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(Math.random(), Math.random(), Math.random()), 0.0);
 				radius = 0.2;
-			} else if(Math.random() < 0.6) {
-				material = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(Math.random(), Math.random(), Math.random()), 0.75);
+			} else if(Math.random() < 0.65) {
+				material = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(Math.random(), Math.random(), Math.random()), 1.0);
 				radius = 0.15;
 			} else {
 				TraceColor color = new TraceColor(Math.random(), Math.random(), Math.random());	
-				material = new Material(color.times(700), color, 1.0);
+				material = new Material(color.times(600), color, 1.0);
 				radius = 0.1;
 			}
 

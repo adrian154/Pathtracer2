@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Tracer {
 	
-	public static final int NUM_SECONDARY_RAYS = 12;
-	public static final int NUM_PRIMARY_RAYS = 64;
+	public static final int NUM_SECONDARY_RAYS = 20;
+	public static final int NUM_PRIMARY_RAYS = 128;
 	public static final int NUM_BOUNCES = 3;
 	
-	public static TraceColor AMBIENT = new TraceColor(5.0, 5.0, 5.0);
+	public static TraceColor AMBIENT = new TraceColor(1.0, 1.0, 1.0);
 	
 	public static double FOCAL_LENGTH = 2.8;
 	public static double FOCAL_PLANE = 10.0;
@@ -123,19 +123,19 @@ public class Tracer {
 				Ray ray = new Ray(new Vector(0, 0, 0), new Vector(px, py, FOCAL_LENGTH));
 				
 				/* Simulate aperture */
-				double focalDist = (FOCAL_PLANE - ray.origin.z) / ray.direction.z;
-				Vector focalPoint = ray.point(focalDist);
+				//double focalDist = (FOCAL_PLANE - ray.origin.z) / ray.direction.z;
+				//Vector focalPoint = ray.point(focalDist);
 				
-				double angle = Math.random() * Math.PI * 2;
-				double distance = Math.random() * APERTURE;
-				Vector newPoint = new Vector(Math.cos(angle) * distance, Math.sin(angle) * distance, FOCAL_LENGTH);
-				Ray newRay = new Ray(newPoint, Vector.sub(focalPoint, newPoint).normalize());
+				//double angle = Math.random() * Math.PI * 2;
+				//double distance = Math.random() * APERTURE;
+				//Vector newPoint = new Vector(Math.cos(angle) * distance, Math.sin(angle) * distance, FOCAL_LENGTH);
+				//Ray newRay = new Ray(newPoint, Vector.sub(focalPoint, newPoint).normalize());
 							
 				/* Do primary rays */
 				TraceColor radiance = new TraceColor(0.0, 0.0, 0.0);
 				
 				for(int k = 0; k < NUM_PRIMARY_RAYS; k++) {
-					radiance = radiance.plus(Tracer.traceRay(newRay, scene.objects, 0, -1));
+					radiance = radiance.plus(Tracer.traceRay(ray, scene.objects, 0, -1));
 				}
 				
 				radiance.div(NUM_PRIMARY_RAYS);
