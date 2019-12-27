@@ -101,15 +101,46 @@ public class IntersectionTester {
 			Vector normal = plane.normal;
 			Material material = plane.material;
 			
+			/* Texture on floor */
 			if(index == 0) {
-				double sz = 1.5;
+				double sz = 2;
+				
 				double twX = point.x - Math.floor(point.x / sz) * sz;
 				double twZ = point.z - Math.floor(point.z / sz) * sz;
-				int texX = (int)Math.floor(twX / sz * (double)Main.texture.getWidth());
-				int texZ = (int)Math.floor(twZ / sz * (double)Main.texture.getHeight());
+				int texX = (int)Math.floor(twX / sz * Main.texture.getWidth());
+				int texZ = (int)Math.floor(twZ / sz * Main.texture.getHeight());
+				
+				texX = Math.max(0, Math.min(texX, Main.texture.getWidth() - 1));
+				texZ = Math.max(0, Math.min(texZ, Main.texture.getHeight() - 1));
 				
 				Color col = new Color(Main.texture.getRGB(texX, texZ));
 				material = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(col.getRed() / 255.0, col.getGreen() / 255.0, col.getBlue() / 255.0), 0.0);
+			}
+			
+			/* Texture on rear */
+			if(index == 2) {
+				double sz = 2;
+				
+				double twX = (point.x + sz / 2) - Math.floor((point.x + sz / 2) / sz) * sz;
+				double twY = (-point.y + sz / 2) - Math.floor((-point.y + sz / 2) / sz) * sz;
+				int texX = (int)Math.floor(twX / sz * (double)Main.texture2.getWidth());
+				int texY = (int)Math.floor(twY / sz * (double)Main.texture2.getHeight());
+				
+				texX = Math.max(0, Math.min(texX, Main.texture.getWidth() - 1));
+				texY = Math.max(0, Math.min(texY, Main.texture.getHeight() - 1));
+				
+				Color col = new Color(Main.texture2.getRGB(texX, texY));
+				material = new Material(new TraceColor(col.getRed() * 3, col.getGreen() * 3, col.getBlue() * 3), new TraceColor(1.0, 1.0, 1.0), 0.0);				
+			}
+			
+			/* Grid on ceiling */
+			if(index == 1) {
+				
+				double dist = Vector.sub(point, new Vector(0.0, 1.0, 3.0)).length();
+				if(dist < 0.4) {
+					material = new Material(new TraceColor(4000.0, 4000.0, 4000.0), new TraceColor(1.0, 1.0, 1.0), 0.0);
+				}
+				
 			}
 			
 			return new Intersection(material, point, normal, nearestDistance, index);

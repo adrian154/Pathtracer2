@@ -48,6 +48,14 @@ public class TraceColor {
 		);
 	}
 	
+	public TraceColor correct(double gamma) {
+		return new TraceColor(
+			Math.pow(red, gamma),
+			Math.pow(green, gamma),
+			Math.pow(green, gamma)
+		);
+	}
+	
 	public String toString() {
 		return new String("(" + red + ", " + green + ", " + blue + ")");
 	}
