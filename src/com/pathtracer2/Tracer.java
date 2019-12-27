@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class Tracer {
 	
-	public static final int NUM_SECONDARY_RAYS = 20;
-	public static final int NUM_PRIMARY_RAYS = 128;
-	public static final int NUM_BOUNCES = 3;
+	public static final int NUM_SECONDARY_RAYS = 4;
+	public static final int NUM_PRIMARY_RAYS = 4;
+	public static final int NUM_BOUNCES = 2;
 	
-	public static TraceColor AMBIENT = new TraceColor(1.0, 1.0, 1.0);
+	public static TraceColor AMBIENT = new TraceColor(0.0, 0.0, 0.0);
 	
-	public static double FOCAL_LENGTH = 2.8;
+	public static double FOCAL_LENGTH = 1.0;
 	public static double FOCAL_PLANE = 10.0;
 	public static double APERTURE = 0.3;
 	
@@ -36,8 +36,8 @@ public class Tracer {
 		/* We need to translate this vector from the local coordinate space (where Z=(0,0,1)) to a global coordinate space where Z=Normal */
 		/* U,V,W = basis vectors of local coord space (V=Normal) */
 		Vector V = normal;
-		Vector W = Vector.getOrthagonal(V);
-		Vector U = Vector.cross(V, W);
+		Vector U = Vector.getOrthagonal(V);
+		Vector W = Vector.cross(V, U);
 		
 		/* Convert randomVector to global cartesian coords */
 		Vector result = new Vector(
@@ -67,9 +67,9 @@ public class Tracer {
 		}
 		
 		Intersection intersection = IntersectionTester.getIntersection(ray, objects, originIndex);
-		
+
 		if(intersection.distance < Double.POSITIVE_INFINITY) {
-		
+			
 			TraceColor radiance = intersection.material.emission;
 			TraceColor incomingLight = new TraceColor(0.0, 0.0, 0.0);
 
@@ -83,12 +83,15 @@ public class Tracer {
 				} else {
 					newDirection = getDiffuseVector(intersection.normal).normalize();
 				}
-			
+				
+				if(intersection.index == 3) System.out.println(newDirection.toString());
+	
 				/* Do sample */
 				Ray newRay = new Ray(intersection.point, newDirection);
 				incomingLight = incomingLight.plus(traceRay(newRay, objects, bounces + 1, intersection.index).times(Vector.dot(newDirection, intersection.normal)));
 			
 			}
+
 			
 			/* Calculate incoming light */
 			incomingLight = incomingLight.div(NUM_SECONDARY_RAYS);
@@ -141,7 +144,7 @@ public class Tracer {
 				radiance.div(NUM_PRIMARY_RAYS);
 
 				/* Write pixel */
-				output.writePixel(i, j, (int)radiance.red, (int)radiance.green, (int)radiance.blue);
+				output.writePixel(i, output.height - 1 - j, (int)radiance.red, (int)radiance.green, (int)radiance.blue);
 	
 			}
 			

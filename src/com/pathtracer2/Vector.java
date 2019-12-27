@@ -51,16 +51,11 @@ public class Vector {
 	}
 	
 	public static Vector getOrthagonal(Vector vector) {
-		boolean b0 = (vector.x < vector.y) && (vector.x < vector.z);
-		boolean b1 = (vector.y <= vector.x) && (vector.y < vector.z);
-		boolean b2 = (vector.z <= vector.x) && (vector.z <= vector.y);
-		
-		return Vector.cross(vector, new Vector(b0 ? 1 : 0, b1 ? 1 : 0, b2 ? 1 : 0));
+		return new Vector(-vector.y, vector.x, 0);
 	}
 	
 	public String toString() {
 		return new String("(" + this.x + ", " + this.y + ", " + this.z + ")");
-		//return new String("{\"x\":\"" + this.x + "\",\"y\":\"" + this.y + "\",\"z\":\"" + this.z + "\"} ");
 	}
 	
 }

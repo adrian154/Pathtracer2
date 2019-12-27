@@ -12,7 +12,7 @@ public class Output {
 	public int height;
 	
 	public Output(int width, int height) {
-		image = new BufferedImage(width * 2, height * 2, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		this.width = width;
 		this.height = height;
 	}
@@ -26,10 +26,7 @@ public class Output {
 		
 		/* Write actual rgb value */
 		int rgb = (r << 16) | (g << 8) | (b);
-		image.setRGB(x * 2, y * 2, rgb);
-		image.setRGB(x * 2 + 1, y * 2, rgb);
-		image.setRGB(x * 2, y * 2 + 1, rgb);
-		image.setRGB(x * 2 + 1, y * 2 + 1, rgb);
+		image.setRGB(x, y, rgb);
 	
 	}
 	

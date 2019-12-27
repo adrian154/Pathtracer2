@@ -3,77 +3,42 @@ package com.pathtracer2;
 import java.util.ArrayList;
 
 public class Main {
-	public static final int WIDTH = 360;
-	public static final int HEIGHT = 360;
+	public static final int WIDTH = 512;
+	public static final int HEIGHT = 512;
 	
 	public static void main(String[] args) {
 		
 		Output output = new Output(WIDTH, HEIGHT);
 		Scene scene = new Scene();
-
-
-		/* World objects. */
-		ArrayList<WorldObject> objects = new ArrayList<WorldObject>();
+		double boxHeight = 2.0;
+		double boxDepth = 10.0;
+		double boxWidth = 2.0;
 		
-		/* Area that spheres can occupy. */
-		double box = 2.0;
-
-		for(int i = 0; i < 16; i++) {
-			Material material;
-			double radius;
-			
-			if(Math.random() < (1.0/3.0)) {
-				material = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(Math.random(), Math.random(), Math.random()), 0.0);
-				radius = 0.2;
-			} else if(Math.random() < 0.65) {
-				material = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(Math.random(), Math.random(), Math.random()), 1.0);
-				radius = 0.15;
-			} else {
-				TraceColor color = new TraceColor(Math.random(), Math.random(), Math.random());	
-				material = new Material(color.times(600), color, 1.0);
-				radius = 0.1;
-			}
-
-			Sphere sphere = new Sphere(new Vector(Math.random() * box - box / 2, Math.random() * box - box / 2, Math.random() * box - box / 2 + 10), radius, material);
-			objects.add(sphere);
-
-		}
+		Material red = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(1.0, 0.0, 0.0), 0.0);
+		Material green = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(0.0, 1.0, 0.0), 0.0);
+		Material white = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(1.0, 1.0, 1.0), 0.0);
+		Material blue = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(0.0, 0.0, 1.0), 0.0);
+		Material yellow = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(1.0, 1.0, 0.0), 0.0);
+		Material source = new Material(new TraceColor(500.0, 500.0, 500.0), new TraceColor(1.0, 1.0, 1.0), 0.0);
 		
-		/* Generate frames. */
-		for(int i = 0; i < 180; i++) {
-			
-			/* Reset scene objects. */
-			scene.objects = new ArrayList<WorldObject>();
-			
-			/* Loop through objects and regenerate scene objects. */
-			for(int j = 0; j < objects.size(); j++) {
-				
-				WorldObject object = objects.get(j);
-				
-				if(object instanceof Sphere) {
-					
-					/* Copy old sphere's properties into scene sphere */
-					Sphere oldSphere = (Sphere)object;
-					Sphere newSphere = new Sphere();
-					newSphere.radius = oldSphere.radius;
-					newSphere.material = oldSphere.material;
-					
-					/* Rotate */
-					newSphere.center = Transform.transform(new Vector(oldSphere.center.x, oldSphere.center.y, oldSphere.center.z - 10), (2 * Math.PI / 180) * i, 0, 0);
-					newSphere.center.z += 10;
-					
-					/* Add */
-					scene.objects.add(newSphere);
-				
-				}
-				
-			}
-
-			/* Draw frame. */
-			Tracer.traceScene(scene, output);
-			output.writeToFile(i + ".png");
-			
-		}
+		Plane floor = new Plane(new Vector(0.0, -boxHeight / 2, 0.0), new Vector(0.0, 1.0, 0.0), green);
+		Plane ceiling = new Plane(new Vector(0.0, boxHeight / 2, 0.0), new Vector(0.0, -1.0, 0.0), red); 
+		Plane front = new Plane(new Vector(0.0, 0.0, boxDepth / 2), new Vector(0.0, 0.0, -1.0), white);
+		Plane rear = new Plane(new Vector(0.0, 0.0, -boxDepth / 2), new Vector(0.0, 0.0, 1.0), white);
+		Plane left = new Plane(new Vector(-boxWidth / 2, 0.0, 0.0), new Vector(1.0, 0.0, 0.0), blue);
+		Plane right = new Plane(new Vector(boxWidth / 2, 0.0, 0.0), new Vector(-1.0, 0.0, 0.0), yellow);
+		Sphere sourceSph = new Sphere(new Vector(0.0, 1.0, 3.0), 0.3, source);
+		
+		scene.objects.add(floor);
+		scene.objects.add(ceiling);
+		scene.objects.add(front);
+		scene.objects.add(rear);
+		scene.objects.add(left);
+		scene.objects.add(right);
+		scene.objects.add(sourceSph);
+		
+		Tracer.traceScene(scene, output);
+		output.writeToFile("output.png");
 		
 	}
 	

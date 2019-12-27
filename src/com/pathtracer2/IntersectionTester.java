@@ -49,7 +49,7 @@ public class IntersectionTester {
 		}
 		
 		/* Solve for distance */
-		double distance = -Vector.dot(Vector.sub(ray.origin, plane.point), plane.normal) / denom;
+		double distance = Vector.dot(Vector.sub(plane.point, ray.origin), plane.normal) / denom;
 		if(distance < 0) {
 			return Double.POSITIVE_INFINITY;
 		} else {
