@@ -8,7 +8,9 @@ A simple pathtracer written in Java.
 
 ## Gallery
 
-https://www.youtube.com/watch?v=MNZIGxNI8YA
+Video of pathtracer in action: https://www.youtube.com/watch?v=MNZIGxNI8YA
+
+![image](https://i.imgur.com/bRJujOm.png)
 
 ![image](https://i.imgur.com/ayaaCiw.png)
 
