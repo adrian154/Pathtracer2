@@ -1,5 +1,6 @@
 package com.pathtracer2;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class IntersectionTester {
@@ -100,9 +101,21 @@ public class IntersectionTester {
 			Vector normal = plane.normal;
 			Material material = plane.material;
 			
+			if(index == 0) {
+				double sz = 1.5;
+				double twX = point.x - Math.floor(point.x / sz) * sz;
+				double twZ = point.z - Math.floor(point.z / sz) * sz;
+				int texX = (int)Math.floor(twX / sz * (double)Main.texture.getWidth());
+				int texZ = (int)Math.floor(twZ / sz * (double)Main.texture.getHeight());
+				
+				Color col = new Color(Main.texture.getRGB(texX, texZ));
+				material = new Material(new TraceColor(0.0, 0.0, 0.0), new TraceColor(col.getRed() / 255.0, col.getGreen() / 255.0, col.getBlue() / 255.0), 0.0);
+			}
+			
 			return new Intersection(material, point, normal, nearestDistance, index);
 		
 		} else if(nearest instanceof Sphere) {
+		
 			Sphere sphere = (Sphere)nearest;
 			Vector point = ray.point(nearestDistance);
 			Vector normal = Vector.sub(point, sphere.center).normalize();

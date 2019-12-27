@@ -51,7 +51,13 @@ public class Vector {
 	}
 	
 	public static Vector getOrthagonal(Vector vector) {
-		return new Vector(-vector.y, vector.x, 0);
+		Vector other;
+		if(vector.y != 0 || vector.z != 0) {
+			other = new Vector(1, 0, 0);
+		} else {
+			other = new Vector(0, 1, 0);
+		}
+		return Vector.cross(vector, other);
 	}
 	
 	public String toString() {

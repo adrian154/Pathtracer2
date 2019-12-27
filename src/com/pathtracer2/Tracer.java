@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Tracer {
 	
-	public static final int NUM_SECONDARY_RAYS = 4;
-	public static final int NUM_PRIMARY_RAYS = 4;
+	public static final int NUM_SECONDARY_RAYS = 8;
+	public static final int NUM_PRIMARY_RAYS = 8;
 	public static final int NUM_BOUNCES = 2;
 	
 	public static TraceColor AMBIENT = new TraceColor(0.0, 0.0, 0.0);
@@ -83,8 +83,6 @@ public class Tracer {
 				} else {
 					newDirection = getDiffuseVector(intersection.normal).normalize();
 				}
-				
-				if(intersection.index == 3) System.out.println(newDirection.toString());
 	
 				/* Do sample */
 				Ray newRay = new Ray(intersection.point, newDirection);
