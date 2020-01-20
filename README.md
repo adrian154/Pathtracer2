@@ -1,3 +1,6 @@
+# THIS PROJECT IS ARCHIVED.
+# PLEASE CHECK OUT THE [REWRITTEN VERSION](github.com/adrian154/java-pathtracer)
+
 # Pathtracer2
 A simple pathtracer written in Java.
 
